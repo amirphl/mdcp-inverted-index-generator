@@ -10,7 +10,14 @@ import com.vruiz.invertedindex.util.Benchmark;
 import com.vruiz.invertedindex.util.Logger;
 
 import java.io.*;
-import java.util.Calendar;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Provides a user interface to index files
@@ -22,10 +29,10 @@ public final class Indexer {
 
 	protected String directoryPath;
 
-	public  Indexer(String path) {
-		this.directoryPath = path;
-		this.log = new Logger();
-	}
+	// public  Indexer(String path) {
+	// 	this.directoryPath = path;
+	// 	this.log = new Logger();
+	// }
 
 	/**
 	 * this enum is used to reference  the names of the fields, Helps to avoid typo errors 8)
@@ -148,29 +155,71 @@ public final class Indexer {
 		}
 
 		this.log.info(String.format("%d documents indexed, %d different terms", indexer.getNumDocs(), indexer.getNumTerms()));
+		reader.close();
 	}
 
-	public static void main(String[] args){
-		String currentDirectory = new File("").getAbsolutePath();
+	public static void pack(final Path folder, final Path zipFilePath) throws IOException {
+		try (
+				FileOutputStream fos = new FileOutputStream(zipFilePath.toFile());
+				ZipOutputStream zos = new ZipOutputStream(fos)
+		) {
+			Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					zos.putNextEntry(new ZipEntry(folder.relativize(file).toString()));
+					Files.copy(file, zos);
+					zos.closeEntry();
+					return FileVisitResult.CONTINUE;
+				}
 
-		if (args.length == 0) {
-			System.out.println("no tsv file specified");
-			System.exit(0);
+				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+					zos.putNextEntry(new ZipEntry(folder.relativize(dir).toString() + "/"));
+					zos.closeEntry();
+					return FileVisitResult.CONTINUE;
+				}
+			});
 		}
+	}
 
-		String fileName = args[0];
+	private static String getPathFromInputFilePath(String inputFilePath, String replaceWith){
+		String[] arr = inputFilePath.split("/");
+        arr[arr.length - 1] = replaceWith;
+		StringBuilder builder = new StringBuilder();
+        for (String s : arr) {
+			builder.append(s);
+			builder.append("/");
+        }
+        return builder.toString();
+	}
+
+	private static void createDir(String path) throws IOException {
+		File file = new File(path);
+		if(!file.exists()){
+			boolean bool = file.mkdir();
+			if(bool)
+				System.out.println("Directory created successfully");
+			else{
+				System.out.println("Couldn’t create specified directory: " + path);
+				throw new IOException();
+			}
+		}
+	}
+
+	public static String start(String fileName) throws IOException {
 		File f = new File(fileName);
 		if (!f.exists()) {
 			System.out.printf("tsv file can't be read, is the file there? %s\n", fileName);
 			System.exit(0);
 		}
 
-		String directoryPath = currentDirectory.concat("/index/");
+		String directoryPath = getPathFromInputFilePath(fileName, "indexer_outputfiles");
 		System.out.printf("\nBuilding index in path: %s \n", directoryPath);
+		createDir(directoryPath);
 
 		Benchmark.getInstance().start("Indexer.main");
 		try {
-			Indexer indexer = new Indexer(directoryPath);
+			Indexer indexer = new Indexer();
+			indexer.directoryPath = directoryPath;
+			indexer.log = new Logger();
 			indexer.indexFile(f);
 		} catch (IOException e) {
 			System.out.println("There was a problem reading the TSV file " );
@@ -185,5 +234,20 @@ public final class Indexer {
 
 		t = Benchmark.getInstance().getTime("IndexWriter.flush");
 		System.out.printf("\ntime in IndexWriter.flush : %d milliseconds\n", t);
+
+		String zipFilesPath = getPathFromInputFilePath(fileName, "indexer_zipfiles");
+		createDir(zipFilesPath);
+		String finalZipFilePath = zipFilesPath + "indexer_final_output.zip";
+
+		pack(Paths.get(directoryPath), Paths.get(finalZipFilePath));
+		return finalZipFilePath;
+	}
+
+	public static void main(String[] args) throws IOException{
+		if (args.length == 0) {
+			System.out.println("no tsv file specified");
+			System.exit(0);
+		}
+		start(args[0]);
 	}
 }
