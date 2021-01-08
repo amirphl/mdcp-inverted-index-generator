@@ -1,8 +1,8 @@
-package com.vruiz.invertedindex.index;
+package com.example.index;
 
 import static org.junit.Assert.*;
 
-import com.vruiz.invertedindex.document.Document;
+import com.example.document.Document;
 import org.junit.Test;
 
 import java.util.*;

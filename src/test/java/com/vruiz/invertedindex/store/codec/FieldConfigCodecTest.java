@@ -1,7 +1,7 @@
-package com.vruiz.invertedindex.store.codec;
+package com.example.store.codec;
 
-import com.vruiz.invertedindex.document.FieldInfo;
-import com.vruiz.invertedindex.index.CorruptIndexException;
+import com.example.document.FieldInfo;
+import com.example.index.CorruptIndexException;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

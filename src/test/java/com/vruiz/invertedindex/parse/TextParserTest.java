@@ -1,7 +1,7 @@
-package com.vruiz.invertedindex.parse;
+package com.example.parse;
 
-import com.vruiz.invertedindex.document.Field;
-import com.vruiz.invertedindex.document.FieldInfo;
+import com.example.document.Field;
+import com.example.document.FieldInfo;
 import junit.framework.TestCase;
 
 import static org.junit.Assert.assertEquals;

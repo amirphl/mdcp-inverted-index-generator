@@ -1,6 +1,6 @@
-package com.vruiz.invertedindex.store.codec;
+package com.example.store.codec;
 
-import com.vruiz.invertedindex.index.CorruptIndexException;
+import com.example.index.CorruptIndexException;
 import org.junit.Test;
 
 import java.util.Formatter;
