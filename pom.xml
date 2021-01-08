@@ -76,7 +76,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>com.vruiz.invertedindex.Indexer</mainClass>
+              <mainClass>com.example.Indexer</mainClass>
             </manifest>
             <manifestEntries>
               <Class-Path>.</Class-Path>

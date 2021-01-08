@@ -1,8 +1,8 @@
-package com.vruiz.invertedindex.store.file;
+package com.example.store.file;
 
-import com.vruiz.invertedindex.document.FieldInfo;
-import com.vruiz.invertedindex.index.CorruptIndexException;
-import com.vruiz.invertedindex.store.codec.FieldConfigCodec;
+import com.example.document.FieldInfo;
+import com.example.index.CorruptIndexException;
+import com.example.store.codec.FieldConfigCodec;
 import org.junit.Test;
 
 import java.io.File;

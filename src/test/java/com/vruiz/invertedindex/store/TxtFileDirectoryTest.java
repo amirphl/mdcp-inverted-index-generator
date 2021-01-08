@@ -1,12 +1,12 @@
-package com.vruiz.invertedindex.store;
+package com.example.store;
 
-import com.vruiz.invertedindex.document.Document;
-import com.vruiz.invertedindex.document.Field;
-import com.vruiz.invertedindex.document.FieldInfo;
-import com.vruiz.invertedindex.index.Index;
-import com.vruiz.invertedindex.index.IndexWriter;
-import com.vruiz.invertedindex.index.Posting;
-import com.vruiz.invertedindex.parse.TextParser;
+import com.example.document.Document;
+import com.example.document.Field;
+import com.example.document.FieldInfo;
+import com.example.index.Index;
+import com.example.index.IndexWriter;
+import com.example.index.Posting;
+import com.example.parse.TextParser;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.vruiz.invertedindex.parse;
+package com.example.parse;
 
 import org.junit.Test;
 

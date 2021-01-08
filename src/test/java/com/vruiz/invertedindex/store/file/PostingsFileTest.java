@@ -1,7 +1,7 @@
-package com.vruiz.invertedindex.store.file;
+package com.example.store.file;
 
-import com.vruiz.invertedindex.index.Posting;
-import com.vruiz.invertedindex.store.codec.PostingsCodec;
+import com.example.index.Posting;
+import com.example.store.codec.PostingsCodec;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
