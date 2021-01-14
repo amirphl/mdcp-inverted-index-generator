@@ -191,3 +191,20 @@ which would have a FIFO queue. So indexing could happen independently of writing
 
 * To improve the precission of the search component, I would implement multi-term queries. This would require to use
 several threads to make queries for single terms in parallel, and then join the results of the single queries
+
+### how to build jar and dex
+- `mvn clean install dependency:copy-dependencies`
+- `/usr/lib/android-sdk/build-tools/30.0.3/d8 target/classes/com/example/Job.class --release --output dex.jar --lib /usr/lib/android-sdk/platforms/android-30/android.jar --classpath target/dependency/*`
+or  
+- `/usr/lib/android-sdk/build-tools/30.0.3/d8 --release --output dex.jar target/Indexer/Indexer.jar`
+
+### program arguments
+- arg 0: input file URL ---> url of a file containing documents
+- arg 1: output file path ---> program writes inverted index in this in a zip file
+- arg 2: fraction ---> fraction of input (not yet used) 
+- arg 3: total fractions (not yet used)
+- ex: example.com/input.txt /home/user/output.out 3 10
+here 3 10 means we want to use section 3 of 10
+
+### output format
+zip
