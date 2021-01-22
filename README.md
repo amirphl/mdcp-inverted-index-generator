@@ -200,11 +200,19 @@ or
 
 ### program arguments
 - arg 0: input file URL ---> url of a file containing documents
-- arg 1: output file path ---> program writes inverted index in this in a zip file
+- arg 1: output file path ---> program writes inverted index in this path in a zip file
 - arg 2: fraction ---> fraction of input (not yet used) 
 - arg 3: total fractions (not yet used)
-- ex: example.com/input.txt /home/user/output.out 3 10
+- ex: example.com/input.txt /home/user/output.zip 3 10
 here 3 10 means we want to use section 3 of 10
 
 ### output format
 zip
+
+### partial outputs merger
+to merge partial indexes, `Run com.example.Merger` and pass partial indexes *zip* file pathes as arguments.  
+notes:
+- index order is not guaranteed
+- files *norms.body*, *stored.titles* and *fields* are currently ignored. TODO fix
+- ex: merge result of "word:a,b;c,d;e,f;" and "word:g,h;i,j;k,l;" = "word:a,b;c,d;e,f;|g,h;i,j;k,l;". I have to *save* (not to *add*, since it's inefficient) NUM_OF_DOCUMENTS in the first index somewhere in a file because `g,i, and l` has to be increased by NUM_OF_DOCUMENTS.
+  

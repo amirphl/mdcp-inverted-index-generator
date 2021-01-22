@@ -22,11 +22,11 @@ public class HitTest {
 		resultSet.add(new Hit(d3, 0.5f));
 
 		Iterator it = resultSet.descendingSet().iterator();
-		Hit h = (Hit)it.next();
+		Hit h = (Hit) it.next();
 		assertEquals("first is doc 2", d2.getDocumentId(), h.document().getDocumentId());
-		h = (Hit)it.next();
+		h = (Hit) it.next();
 		assertEquals("second is doc 1", d1.getDocumentId(), h.document().getDocumentId());
-		h = (Hit)it.next();
+		h = (Hit) it.next();
 		assertEquals("last is doc 3", d3.getDocumentId(), h.document().getDocumentId());
 	}
 }
