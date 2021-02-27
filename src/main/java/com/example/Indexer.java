@@ -246,6 +246,9 @@ public final class Indexer {
 		String outputFilePath = args[1];
 		int fraction = Integer.parseInt(args[2]);
 		int totalFractions = Integer.parseInt(args[3]);
+		long s = System.currentTimeMillis();
 		start(inputFileURL, outputFilePath, fraction, totalFractions);
+		long e = System.currentTimeMillis();
+		System.out.println(e - s);
 	}
 }

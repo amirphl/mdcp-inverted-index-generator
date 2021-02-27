@@ -194,25 +194,24 @@ several threads to make queries for single terms in parallel, and then join the 
 
 ### how to build jar and dex
 - `mvn clean install dependency:copy-dependencies`
-- `/usr/lib/android-sdk/build-tools/30.0.3/d8 target/classes/com/example/Job.class --release --output dex.jar --lib /usr/lib/android-sdk/platforms/android-30/android.jar --classpath target/dependency/*`
+- `/usr/lib/android-sdk/build-tools/30.0.3/d8 target/classes/com/example/Job.class --release --output target/mdcp-indexer.dex.jar --lib /usr/lib/android-sdk/platforms/android-30/android.jar --classpath target/dependency/*`
 or  
-- `/usr/lib/android-sdk/build-tools/30.0.3/d8 --release --output dex.jar target/Indexer/Indexer.jar`
+- `/usr/lib/android-sdk/build-tools/30.0.3/d8 --release --output target/mdcp-indexer.dex.jar target/Indexer/Indexer.jar`
 
 ### program arguments
-- arg 0: input file URL ---> url of a file containing documents
-- arg 1: output file path ---> program writes inverted index in this path in a zip file
-- arg 2: fraction ---> fraction of input (not yet used) 
+- arg 0: input file URL ---> the url of a file containing documents
+- arg 1: output file path ---> the program writes inverted index in this path in a zip file
+- arg 2: fraction ---> the fraction of input to process (not yet used)
 - arg 3: total fractions (not yet used)
-- ex: example.com/input.txt /home/user/output.zip 3 10
-here 3 10 means we want to use section 3 of 10
+- ex: example.com/input.txt /home/user/output.zip 3 10 (we are going to process section 3 of 10)
 
 ### output format
 zip
 
 ### partial outputs merger
-to merge partial indexes, `Run com.example.Merger` and pass partial indexes *zip* file pathes as arguments.  
+to merge partial indexes, `Run com.example.Merger` and pass partial indexes *zip* file pathes as arguments.
 notes:
 - index order is not guaranteed
 - files *norms.body*, *stored.titles* and *fields* are currently ignored. TODO fix
 - ex: merge result of "word:a,b;c,d;e,f;" and "word:g,h;i,j;k,l;" = "word:a,b;c,d;e,f;|g,h;i,j;k,l;". I have to *save* (not to *add*, since it's inefficient) NUM_OF_DOCUMENTS in the first index somewhere in a file because `g,i, and l` has to be increased by NUM_OF_DOCUMENTS.
-  
+
